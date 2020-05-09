@@ -5,14 +5,20 @@ const chokidar = require('chokidar');
 const diff = require('deep-diff')
 
 const config = require('./config');
-const inputJSONFile = path.join(__dirname + '\\data\\eventsFile.json');
+const inputJSONFile = path.join(__dirname + '\\data\\dataFile.json');
 const kafka_topic = 'example';
 let currentObj = null;
 
 const getCurrent = (file) => {
+    try{
     const rawData = fs.readFileSync(file);
     const fileContent = JSON.parse(rawData);
     return fileContent;
+    }
+    catch(err){
+        console.log(err);
+    
+}
 }
 // payloads = [
 //     {
@@ -43,7 +49,7 @@ const watcher = chokidar.watch(inputJSONFile, {
 watcher
     .on('add', path => {
         currentObj = getCurrent(path);
-        console.log(currentObj);
+        //console.log(currentObj);
     });
 
 try {
